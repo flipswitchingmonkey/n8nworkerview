@@ -1,3 +1,5 @@
+name: go_release
+
 on:
   release:
     types: [created]
