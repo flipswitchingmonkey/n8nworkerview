@@ -1,5 +1,7 @@
 A small utility to monitor n8n workers
 
+![CleanShot 2023-10-06 at 17 11 00](https://github.com/flipswitchingmonkey/n8nworkerview/assets/6930367/2fb2fd2f-84d0-4c03-8606-3469331690cf)
+
 To configure, create a `.env` file next to the executable or use the environment to set these options:
 
 ```
