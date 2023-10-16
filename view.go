@@ -28,6 +28,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case tea.WindowSizeMsg:
 			verticalMarginHeight := 2
+			leftSideWidth := m.workerTable.Width()
+			BaseStyle.Height(msg.Height - verticalMarginHeight)
+			FocusStyle.Height(msg.Height - verticalMarginHeight)
+
 			if !m.ready {
 				// Since this program is using the full size of the viewport we
 				// need to wait until we've received the window dimensions before
@@ -40,8 +44,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.viewport.SetContent(RenderWorkerDetails(m))
 				m.ready = true
 			} else {
-				m.viewport.Width = msg.Width
+				m.viewport.Width = msg.Width - leftSideWidth
+				m.jobsTable.SetWidth(msg.Width)
 				m.viewport.Height = msg.Height - verticalMarginHeight
+				m.jobsTable.SetHeight(msg.Height - verticalMarginHeight * 2)
 			}
 		case tea.KeyMsg:
 			selectedWorkerName, _ := m.GetSelectedRowName()
@@ -102,6 +108,9 @@ func (m model) View() string {
 		rightStyle = FocusStyle
 	}
 
+	var leftSide string
+	leftSide = leftStyle.Render(m.workerTable.View())
+
 	var rightSide string
 	if m.showDetails {
 		rightSide = rightStyle.Render(m.viewport.View())
@@ -111,7 +120,8 @@ func (m model) View() string {
 
 	return lipgloss.JoinHorizontal(
 	  lipgloss.Left,
-	  leftStyle.Render(m.workerTable.View()),
+	  leftSide,
 		rightSide,
 	 )
+	 
 }
